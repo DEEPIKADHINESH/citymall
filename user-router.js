@@ -14,6 +14,8 @@ route.post("/",async (req,res)=>{
    const salt=await bcrypt.genSalt(10)
    user.password=await bcrypt.hash(user.password,salt)
    await user.save();
-   res.send(user)
+   const token=user.generateAuthToken()
+   res.header("x-auth-token",token).send(user);
+  
 })
 module.exports=route;
